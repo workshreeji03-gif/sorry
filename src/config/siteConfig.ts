@@ -331,8 +331,8 @@ export const siteConfig: SiteConfig = {
   },
 
   audio: {
-    defaultVolume: 0.75,
-    duckedVolume: 0.12,
+    defaultVolume: 0.25,
+    duckedVolume: 0.05,
     fadeDurationMs: 1200,
   },
 };
