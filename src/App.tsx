@@ -4,7 +4,10 @@ import { FilmGrain } from './components/FilmGrain';
 import { ParticleBackground } from './components/ParticleBackground';
 import { HeaderControls } from './components/HeaderControls';
 import { StoryCardDeck } from './components/StoryCardDeck';
-import { Scene1Opening } from './components/Scene1Opening';
+import { CutieIntroCard } from './components/cutie/CutieIntroCard';
+import { CutieFlowerSurpriseCard } from './components/cutie/CutieFlowerSurpriseCard';
+import { CutieHeartPuzzleCard } from './components/cutie/CutieHeartPuzzleCard';
+import { CutieNoteCard } from './components/cutie/CutieNoteCard';
 import { Scene2PhotoReveal } from './components/Scene2PhotoReveal';
 import { Scene3VideoMoment } from './components/Scene3VideoMoment';
 import { Scene4SevenThings } from './components/Scene4SevenThings';
@@ -14,13 +17,12 @@ import { HeartCatcherGame } from './components/games/HeartCatcherGame';
 import { BoyfriendCoupons } from './components/games/BoyfriendCoupons';
 import { SignaturePadTreaty } from './components/ui/SignaturePadTreaty';
 import { TypewriterLetter } from './components/ui/TypewriterLetter';
-import { Scene6Ending } from './components/Scene6Ending';
 import { SceneFinalCallback } from './components/SceneFinalCallback';
 import { Sparkles, Gamepad2, Layers, AlignJustify } from 'lucide-react';
 import { useAudio } from './context/useAudio';
 
 const MainApp: React.FC = () => {
-  // 'deck' mode = exact card-by-card Blush Moments Reel experience
+  // 'deck' mode = exact card-by-card Cutiepage / Reel experience
   // 'scroll' mode = continuous full page scroll
   const [viewMode, setViewMode] = useState<'deck' | 'scroll'>('deck');
   const { restartAudio, startAudio } = useAudio();
@@ -94,29 +96,50 @@ const MainApp: React.FC = () => {
         ) : (
           /* FULL SCROLLABLE EXPERIENCE */
           <div className="w-full">
-            <div id="gate" className="w-full">
-              <Scene1Opening onStart={() => scrollTo('photo')} />
+            {/* 1. HELLO KITTY INTRO */}
+            <div id="gate" className="w-full py-8 flex justify-center px-4">
+              <CutieIntroCard onStart={() => scrollTo('surprises')} />
             </div>
 
+            {/* 2. LITTLE SURPRISES FLOWER KITTY */}
+            <div id="surprises" className="scroll-mt-16 w-full py-8 flex justify-center px-4">
+              <CutieFlowerSurpriseCard />
+            </div>
+
+            {/* 3. ONE HEART IS MISSING 3x3 PUZZLE */}
+            <div id="puzzle" className="scroll-mt-16 w-full py-8 flex justify-center px-4">
+              <CutieHeartPuzzleCard />
+            </div>
+
+            {/* 4. A NOTE JUST FOR YOU WITH TULIP CAT */}
+            <div id="note" className="scroll-mt-16 w-full py-8 flex justify-center px-4">
+              <CutieNoteCard />
+            </div>
+
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+            {/* 5. HER NAVRATRI PHOTO REVEAL */}
             <div id="photo" className="scroll-mt-16 w-full">
               <Scene2PhotoReveal onNext={() => scrollTo('video')} />
             </div>
 
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
+            {/* 6. HER NAVRATRI VIDEO MOMENT */}
             <div id="video" className="scroll-mt-16 w-full">
               <Scene3VideoMoment onNext={() => scrollTo('compliments')} />
             </div>
 
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
+            {/* 7. SEVEN COMPLIMENTS */}
             <div id="compliments" className="scroll-mt-16 w-full">
               <Scene4SevenThings onNext={() => scrollTo('meter')} />
             </div>
 
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
-            {/* THE APOLOGY GAMES & ACTIVITIES */}
+            {/* 8. APOLOGY GAMES & ACTIVITIES */}
             <div className="w-full py-8 px-4 sm:px-8 text-center">
               <div className="max-w-xl mx-auto mb-8 space-y-2">
                 <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1e0c16]/80 border border-[#D7B47C]/40 text-xs text-[#D7B47C]">
@@ -129,27 +152,27 @@ const MainApp: React.FC = () => {
                 </h2>
               </div>
 
-              {/* 1. FORGIVENESS METER */}
+              {/* FORGIVENESS METER */}
               <div id="meter" className="scroll-mt-20 my-12 w-full flex justify-center">
                 <ForgivenessMeter />
               </div>
 
-              {/* 2. RUNAWAY STILL ANGRY BUTTON */}
+              {/* RUNAWAY STILL ANGRY BUTTON */}
               <div id="runaway" className="scroll-mt-20 my-12 w-full flex justify-center">
                 <RunawayButtonGame />
               </div>
 
-              {/* 3. CATCH PRA PTI'S HEARTS */}
+              {/* CATCH HEARTS */}
               <div id="catcher" className="scroll-mt-20 my-12 w-full flex justify-center">
                 <HeartCatcherGame />
               </div>
 
-              {/* 4. BOYFRIEND LOVE COUPONS */}
+              {/* BOYFRIEND LOVE COUPONS */}
               <div id="coupons" className="scroll-mt-20 my-12 w-full flex justify-center">
                 <BoyfriendCoupons />
               </div>
 
-              {/* 5. OFFICIAL PEACE TREATY WITH FINGER SIGNATURE PAD */}
+              {/* OFFICIAL PEACE TREATY WITH FINGER SIGNATURE PAD */}
               <div id="treaty" className="scroll-mt-20 my-12 w-full flex justify-center">
                 <SignaturePadTreaty onSigned={() => {}} />
               </div>
@@ -164,12 +187,9 @@ const MainApp: React.FC = () => {
 
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
-            {/* ENDING CHOICE & CALLBACK */}
-            <div id="ending" className="scroll-mt-16 w-full space-y-12">
-              <Scene6Ending onNext={() => scrollTo('final-callback')} />
-              <div id="final-callback" className="w-full">
-                <SceneFinalCallback onReplay={handleReplay} />
-              </div>
+            {/* FINAL CINEMATIC CALLBACK */}
+            <div id="final-callback" className="w-full">
+              <SceneFinalCallback onReplay={handleReplay} />
             </div>
           </div>
         )}

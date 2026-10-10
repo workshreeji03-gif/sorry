@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { useAudio } from '../context/useAudio';
-import { Scene1Opening } from './Scene1Opening';
+import { CutieIntroCard } from './cutie/CutieIntroCard';
+import { CutieFlowerSurpriseCard } from './cutie/CutieFlowerSurpriseCard';
+import { CutieHeartPuzzleCard } from './cutie/CutieHeartPuzzleCard';
+import { CutieNoteCard } from './cutie/CutieNoteCard';
+import { RunawayButtonGame } from './games/RunawayButtonGame';
 import { Scene2PhotoReveal } from './Scene2PhotoReveal';
 import { Scene3VideoMoment } from './Scene3VideoMoment';
 import { Scene4SevenThings } from './Scene4SevenThings';
-import { RunawayButtonGame } from './games/RunawayButtonGame';
 import { ForgivenessMeter } from './games/ForgivenessMeter';
-import { HeartCatcherGame } from './games/HeartCatcherGame';
 import { BoyfriendCoupons } from './games/BoyfriendCoupons';
-import { SignaturePadTreaty } from './ui/SignaturePadTreaty';
 import { TypewriterLetter } from './ui/TypewriterLetter';
-import { Scene6Ending } from './Scene6Ending';
+import { SignaturePadTreaty } from './ui/SignaturePadTreaty';
 import { SceneFinalCallback } from './SceneFinalCallback';
 
 export const StoryCardDeck: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const { restartAudio, startAudio } = useAudio();
 
-  const totalSteps = 11;
+  const totalSteps = 13;
 
   const goToStep = (step: number) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,217 +46,233 @@ export const StoryCardDeck: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[100dvh] w-full flex flex-col justify-between items-center pb-24 pt-16 px-3 sm:px-6">
-      {/* Step Container with AnimatePresence */}
-      <div className="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center items-center">
+    <div className="relative min-h-[100dvh] w-full flex flex-col justify-between items-center pb-28 pt-14 px-3 sm:px-6">
+      {/* Centered Card Stage */}
+      <div className="w-full max-w-xl mx-auto flex-1 flex flex-col justify-center items-center my-auto">
         <AnimatePresence mode="wait">
+          {/* 0: Hello Kitty Intro Card */}
           {currentStep === 0 && (
             <motion.div
               key="step-0"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.5 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.4 }}
               className="w-full flex justify-center"
             >
-              <Scene1Opening onStart={handleStart} />
+              <CutieIntroCard onStart={handleStart} />
             </motion.div>
           )}
 
+          {/* 1: Little Surprises Flower Kitty */}
           {currentStep === 1 && (
             <motion.div
               key="step-1"
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
+            >
+              <CutieFlowerSurpriseCard />
+            </motion.div>
+          )}
+
+          {/* 2: One heart is missing 3x3 game */}
+          {currentStep === 2 && (
+            <motion.div
+              key="step-2"
+              initial={{ opacity: 0, x: 35 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
+            >
+              <CutieHeartPuzzleCard />
+            </motion.div>
+          )}
+
+          {/* 3: A Note Just For You with Tulip Cat & Love Stamp */}
+          {currentStep === 3 && (
+            <motion.div
+              key="step-3"
+              initial={{ opacity: 0, x: 35 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
+            >
+              <CutieNoteCard />
+            </motion.div>
+          )}
+
+          {/* 4: The Runaway Still Angry Game */}
+          {currentStep === 4 && (
+            <motion.div
+              key="step-4"
+              initial={{ opacity: 0, x: 35 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
               <RunawayButtonGame />
             </motion.div>
           )}
 
-          {currentStep === 2 && (
+          {/* 5: Her Navratri Photo Reveal */}
+          {currentStep === 5 && (
             <motion.div
-              key="step-2"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-5"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
               className="w-full"
             >
               <Scene2PhotoReveal onNext={nextStep} />
             </motion.div>
           )}
 
-          {currentStep === 3 && (
+          {/* 6: Her Navratri Video Moment */}
+          {currentStep === 6 && (
             <motion.div
-              key="step-3"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-6"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
               className="w-full"
             >
               <Scene3VideoMoment onNext={nextStep} />
             </motion.div>
           )}
 
-          {currentStep === 4 && (
+          {/* 7: Seven Compliments */}
+          {currentStep === 7 && (
             <motion.div
-              key="step-4"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-7"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
               className="w-full"
             >
               <Scene4SevenThings onNext={nextStep} />
             </motion.div>
           )}
 
-          {currentStep === 5 && (
+          {/* 8: Forgiveness Meter */}
+          {currentStep === 8 && (
             <motion.div
-              key="step-5"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-8"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
               <ForgivenessMeter />
             </motion.div>
           )}
 
-          {currentStep === 6 && (
+          {/* 9: Boyfriend Love Coupons */}
+          {currentStep === 9 && (
             <motion.div
-              key="step-6"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-9"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
-            >
-              <HeartCatcherGame />
-            </motion.div>
-          )}
-
-          {currentStep === 7 && (
-            <motion.div
-              key="step-7"
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
               <BoyfriendCoupons />
             </motion.div>
           )}
 
-          {currentStep === 8 && (
+          {/* 10: Live Typewriter Letter */}
+          {currentStep === 10 && (
             <motion.div
-              key="step-8"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-10"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
               <TypewriterLetter onComplete={() => {}} />
             </motion.div>
           )}
 
-          {currentStep === 9 && (
+          {/* 11: Peace Treaty with Finger Signature Pad */}
+          {currentStep === 11 && (
             <motion.div
-              key="step-9"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-11"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full flex flex-col items-center"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
               <SignaturePadTreaty onSigned={() => {}} />
             </motion.div>
           )}
 
-          {currentStep === 10 && (
+          {/* 12: Grand Finale & Callback */}
+          {currentStep === 12 && (
             <motion.div
-              key="step-10"
-              initial={{ opacity: 0, x: 40 }}
+              key="step-12"
+              initial={{ opacity: 0, x: 35 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.45 }}
-              className="w-full space-y-8"
+              exit={{ opacity: 0, x: -35 }}
+              transition={{ duration: 0.35 }}
+              className="w-full flex justify-center"
             >
-              <Scene6Ending onNext={nextStep} />
               <SceneFinalCallback onReplay={handleReplay} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Floating Bottom Navigation Bar (The Reel / Blush Moments UI) */}
-      {currentStep > 0 && (
-        <footer className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#10080D]/90 backdrop-blur-xl border border-[#D7B47C]/40 shadow-[0_10px_35px_rgba(0,0,0,0.8)]">
-          {/* Back button */}
+      {/* Floating Bottom Nav Buttons (Exact Cutiepage style from screenshots) */}
+      <footer className="fixed bottom-3 sm:bottom-5 left-0 right-0 z-50 flex items-center justify-center gap-4 px-4 pointer-events-none">
+        <div className="pointer-events-auto flex items-center gap-4 p-1.5 rounded-full bg-[#10080D]/70 backdrop-blur-md shadow-lg border border-white/10">
+          {/* Pastel Blue Back Button */}
           <button
             onClick={prevStep}
-            disabled={currentStep <= 1}
-            className={`p-2 rounded-full transition-all duration-200 cursor-pointer ${
-              currentStep <= 1
-                ? 'opacity-30 cursor-not-allowed text-white/30'
-                : 'text-[#D7B47C] hover:bg-[#4A1228]/60 active:scale-95'
+            disabled={currentStep === 0}
+            className={`px-5 py-2 rounded-full font-sans text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer shadow-sm ${
+              currentStep === 0
+                ? 'opacity-35 cursor-not-allowed bg-[#BEE3F8]/30 text-[#888]'
+                : 'bg-[#BEE3F8] hover:bg-[#A0D4F5] text-[#2B6CB0] active:scale-95'
             }`}
-            aria-label="Previous card"
           >
-            <ChevronLeft className="w-5 h-5" />
+            ← Back
           </button>
 
-          {/* Dots progress indicator */}
-          <div className="flex items-center gap-1 sm:gap-1.5 px-2">
-            {Array.from({ length: totalSteps - 1 }).map((_, i) => {
-              const stepIndex = i + 1;
-              const isActive = stepIndex === currentStep;
-              const isPast = stepIndex < currentStep;
+          {/* Step Pill */}
+          <span className="text-[11px] font-mono text-[#FFF0E8]/70 px-1">
+            {currentStep + 1} / {totalSteps}
+          </span>
 
-              return (
-                <button
-                  key={stepIndex}
-                  onClick={() => goToStep(stepIndex)}
-                  className={`transition-all duration-300 rounded-full cursor-pointer ${
-                    isActive
-                      ? 'w-5 h-2 bg-[#D7B47C]'
-                      : isPast
-                      ? 'w-2 h-2 bg-[#B76E79]/80'
-                      : 'w-2 h-2 bg-white/20 hover:bg-white/40'
-                  }`}
-                  aria-label={`Go to step ${stepIndex}`}
-                />
-              );
-            })}
-          </div>
-
-          {/* Next button */}
+          {/* Pastel Pink Next Button */}
           {currentStep < totalSteps - 1 ? (
             <button
               onClick={nextStep}
-              className="p-2 rounded-full text-[#D7B47C] hover:bg-[#4A1228]/60 active:scale-95 transition-all cursor-pointer"
-              aria-label="Next card"
+              className="px-5 py-2 rounded-full font-sans text-xs sm:text-sm font-semibold bg-[#FED7E2] hover:bg-[#FBB6CE] text-[#97266D] active:scale-95 transition-all duration-200 cursor-pointer shadow-sm"
             >
-              <ChevronRight className="w-5 h-5" />
+              Next →
             </button>
           ) : (
             <button
               onClick={handleReplay}
-              className="p-2 rounded-full text-[#D7B47C] hover:bg-[#4A1228]/60 active:scale-95 transition-all cursor-pointer"
-              aria-label="Replay experience"
+              className="px-5 py-2 rounded-full font-sans text-xs sm:text-sm font-semibold bg-[#FED7E2] hover:bg-[#FBB6CE] text-[#97266D] active:scale-95 transition-all duration-200 cursor-pointer shadow-sm"
             >
-              <RotateCcw className="w-4 h-4" />
+              Replay ✨
             </button>
           )}
-        </footer>
-      )}
+        </div>
+      </footer>
     </div>
   );
 };
