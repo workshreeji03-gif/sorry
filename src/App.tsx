@@ -9,29 +9,39 @@ import { Scene1Opening } from './components/Scene1Opening';
 import { Scene2PhotoReveal } from './components/Scene2PhotoReveal';
 import { Scene3VideoMoment } from './components/Scene3VideoMoment';
 import { Scene4SevenThings } from './components/Scene4SevenThings';
-import { SceneGamesHub } from './components/SceneGamesHub';
+import { ForgivenessMeter } from './components/games/ForgivenessMeter';
+import { RunawayButtonGame } from './components/games/RunawayButtonGame';
+import { HeartCatcherGame } from './components/games/HeartCatcherGame';
+import { BoyfriendCoupons } from './components/games/BoyfriendCoupons';
+import { PeaceTreaty } from './components/games/PeaceTreaty';
 import { Scene5Letter } from './components/Scene5Letter';
 import { Scene6Ending } from './components/Scene6Ending';
 import { SceneFinalCallback } from './components/SceneFinalCallback';
+import { Sparkles, Gamepad2 } from 'lucide-react';
 
 const MainApp: React.FC = () => {
-  const [currentScene, setCurrentScene] = useState<number>(1);
-  const { restartAudio } = useAudio();
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
+  const { restartAudio, startAudio } = useAudio();
 
-  const handleNext = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentScene((prev) => Math.min(8, prev + 1));
+  const scrollTo = (id: string) => {
+    setHasStarted(true);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleStart = () => {
+    setHasStarted(true);
+    setTimeout(() => {
+      scrollTo('photo');
+    }, 400);
   };
 
   const handleReplay = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentScene(1);
+    setHasStarted(false);
     restartAudio();
-  };
-
-  const handleSceneSelect = (scene: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentScene(scene);
   };
 
   return (
@@ -42,121 +52,117 @@ const MainApp: React.FC = () => {
       {/* Floating golden stardust particle canvas */}
       <ParticleBackground />
 
-      {/* Floating Header Controls */}
+      {/* Floating Header Controls with quick navigation */}
       <HeaderControls
-        currentScene={currentScene}
-        totalScenes={8}
-        onSceneSelect={handleSceneSelect}
-        showProgress={currentScene > 1}
+        onNavigate={(id) => {
+          if (!hasStarted) {
+            startAudio();
+          }
+          scrollTo(id);
+        }}
+        showNav={true}
       />
 
-      {/* Scene Render with Smooth Cross-fades */}
-      <main className="relative z-10 w-full min-h-[100dvh]">
-        <AnimatePresence mode="wait">
-          {currentScene === 1 && (
-            <motion.div
-              key="scene-1"
+      {/* Main Content Area */}
+      <main className="relative z-10 w-full pt-14">
+        {/* SCENE 1: THE OPENING */}
+        <AnimatePresence>
+          {!hasStarted && (
+            <motion.section
+              key="opening-gate"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.8 }}
               className="w-full"
             >
-              <Scene1Opening onStart={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 2 && (
-            <motion.div
-              key="scene-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <Scene2PhotoReveal onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 3 && (
-            <motion.div
-              key="scene-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <Scene3VideoMoment onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 4 && (
-            <motion.div
-              key="scene-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <Scene4SevenThings onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 5 && (
-            <motion.div
-              key="scene-5"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <SceneGamesHub onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 6 && (
-            <motion.div
-              key="scene-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <Scene5Letter onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 7 && (
-            <motion.div
-              key="scene-7"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <Scene6Ending onNext={handleNext} />
-            </motion.div>
-          )}
-
-          {currentScene === 8 && (
-            <motion.div
-              key="scene-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.1, ease: 'easeInOut' }}
-              className="w-full"
-            >
-              <SceneFinalCallback onReplay={handleReplay} />
-            </motion.div>
+              <Scene1Opening onStart={handleStart} />
+            </motion.section>
           )}
         </AnimatePresence>
+
+        {/* FULL INTERACTIVE EXPERIENCE (VISIBLE & SCROLLABLE) */}
+        <div className={`transition-opacity duration-1000 ${hasStarted ? 'opacity-100' : 'opacity-90'}`}>
+          {/* SECTION 1: PHOTO REVEAL */}
+          <div id="photo" className="scroll-mt-16 w-full">
+            <Scene2PhotoReveal onNext={() => scrollTo('video')} />
+          </div>
+
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+          {/* SECTION 2: VIDEO MOMENT */}
+          <div id="video" className="scroll-mt-16 w-full">
+            <Scene3VideoMoment onNext={() => scrollTo('compliments')} />
+          </div>
+
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+          {/* SECTION 3: SEVEN COMPLIMENTS */}
+          <div id="compliments" className="scroll-mt-16 w-full">
+            <Scene4SevenThings onNext={() => scrollTo('meter')} />
+          </div>
+
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+          {/* SECTION 4 - 8: THE APOLOGY GAMES & ACTIVITIES */}
+          <div className="w-full py-8 px-4 sm:px-8 text-center">
+            <div className="max-w-xl mx-auto mb-8 space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1e0c16]/80 border border-[#D7B47C]/40 text-xs text-[#D7B47C]">
+                <Gamepad2 className="w-3.5 h-3.5" />
+                <span>The Apology Arcade & Games</span>
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <h2 className="font-serif text-3xl sm:text-5xl text-[#FFF0E8] font-normal">
+                Everything to Win Back Your Smile
+              </h2>
+              <p className="font-sans text-xs sm:text-sm text-[#D7B47C]/80 font-light">
+                Play, explore, redeem, and make peace with your bhulakar boyfriend.
+              </p>
+            </div>
+
+            {/* 1. FORGIVENESS METER */}
+            <div id="meter" className="scroll-mt-20 my-12 w-full flex justify-center">
+              <ForgivenessMeter />
+            </div>
+
+            {/* 2. RUNAWAY STILL ANGRY BUTTON */}
+            <div id="runaway" className="scroll-mt-20 my-12 w-full flex justify-center">
+              <RunawayButtonGame />
+            </div>
+
+            {/* 3. CATCH PRA PTI'S HEARTS */}
+            <div id="catcher" className="scroll-mt-20 my-12 w-full flex justify-center">
+              <HeartCatcherGame />
+            </div>
+
+            {/* 4. BOYFRIEND LOVE COUPONS */}
+            <div id="coupons" className="scroll-mt-20 my-12 w-full flex justify-center">
+              <BoyfriendCoupons />
+            </div>
+
+            {/* 5. OFFICIAL PEACE TREATY */}
+            <div id="treaty" className="scroll-mt-20 my-12 w-full flex justify-center">
+              <PeaceTreaty />
+            </div>
+          </div>
+
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+          {/* SECTION 9: MY HANDWRITTEN LETTER */}
+          <div id="letter" className="scroll-mt-16 w-full">
+            <Scene5Letter onNext={() => scrollTo('ending')} />
+          </div>
+
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+          {/* SECTION 10: ENDING CHOICE & CALLBACK */}
+          <div id="ending" className="scroll-mt-16 w-full space-y-12">
+            <Scene6Ending onNext={() => scrollTo('final-callback')} />
+            <div id="final-callback" className="w-full">
+              <SceneFinalCallback onReplay={handleReplay} />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
