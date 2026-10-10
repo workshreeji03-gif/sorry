@@ -306,10 +306,10 @@ export const siteConfig: SiteConfig = {
       "You looked stunning. And I wish I'd said it a hundred times that night.",
       "But beyond the outfit, the pictures, and everything else, you're the girl who makes my ordinary days special.",
       "I can't go back and change that moment, but I can do better at expressing how much I appreciate you.",
-      "I love you, Prapti.",
+      "I love you my dayan👻.",
       "And I promise to make more effort to show it.",
     ],
-    letterClosing: "Forever your stupid boyfriend ❤️",
+    letterClosing: "Forever your bhulakar boyfriend ❤️",
     letterSignoff: "With all my love",
   },
 
