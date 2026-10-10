@@ -30,7 +30,7 @@ export const HeaderControls: React.FC<HeaderControlsProps> = ({
       {/* Brand / Tag */}
       <div className="pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1e0c16]/80 border border-[#D7B47C]/30 text-xs text-[#D7B47C] font-sans shrink-0">
         <Sparkles className="w-3.5 h-3.5 text-[#D7B47C]" />
-        <span className="font-serif italic text-[#FFF0E8]/90 font-medium">For Prapti ❤️</span>
+        <span className="font-serif italic text-[#FFF0E8]/90 font-medium">Sorry Prapti ❤️</span>
       </div>
 
       {/* Nav items pills (horizontal scrollable on mobile) */}
