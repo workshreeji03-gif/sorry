@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
 import { AudioProvider } from './context/AudioContext';
-import { useAudio } from './context/useAudio';
 import { FilmGrain } from './components/FilmGrain';
 import { ParticleBackground } from './components/ParticleBackground';
 import { HeaderControls } from './components/HeaderControls';
+import { StoryCardDeck } from './components/StoryCardDeck';
 import { Scene1Opening } from './components/Scene1Opening';
 import { Scene2PhotoReveal } from './components/Scene2PhotoReveal';
 import { Scene3VideoMoment } from './components/Scene3VideoMoment';
@@ -13,34 +12,31 @@ import { ForgivenessMeter } from './components/games/ForgivenessMeter';
 import { RunawayButtonGame } from './components/games/RunawayButtonGame';
 import { HeartCatcherGame } from './components/games/HeartCatcherGame';
 import { BoyfriendCoupons } from './components/games/BoyfriendCoupons';
-import { PeaceTreaty } from './components/games/PeaceTreaty';
-import { Scene5Letter } from './components/Scene5Letter';
+import { SignaturePadTreaty } from './components/ui/SignaturePadTreaty';
+import { TypewriterLetter } from './components/ui/TypewriterLetter';
 import { Scene6Ending } from './components/Scene6Ending';
 import { SceneFinalCallback } from './components/SceneFinalCallback';
-import { Sparkles, Gamepad2 } from 'lucide-react';
+import { Sparkles, Gamepad2, Layers, AlignJustify } from 'lucide-react';
+import { useAudio } from './context/useAudio';
 
 const MainApp: React.FC = () => {
-  const [hasStarted, setHasStarted] = useState<boolean>(false);
+  // 'deck' mode = exact card-by-card Blush Moments Reel experience
+  // 'scroll' mode = continuous full page scroll
+  const [viewMode, setViewMode] = useState<'deck' | 'scroll'>('deck');
   const { restartAudio, startAudio } = useAudio();
 
   const scrollTo = (id: string) => {
-    setHasStarted(true);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const handleStart = () => {
-    setHasStarted(true);
+    setViewMode('scroll');
     setTimeout(() => {
-      scrollTo('photo');
-    }, 400);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   };
 
   const handleReplay = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setHasStarted(false);
     restartAudio();
   };
 
@@ -52,117 +48,131 @@ const MainApp: React.FC = () => {
       {/* Floating golden stardust particle canvas */}
       <ParticleBackground />
 
-      {/* Floating Header Controls with quick navigation */}
+      {/* Top Header with quick links & Sound toggle */}
       <HeaderControls
         onNavigate={(id) => {
-          if (!hasStarted) {
-            startAudio();
-          }
+          startAudio();
           scrollTo(id);
         }}
         showNav={true}
       />
 
-      {/* Main Content Area */}
-      <main className="relative z-10 w-full pt-14">
-        {/* SCENE 1: THE OPENING */}
-        <AnimatePresence>
-          {!hasStarted && (
-            <motion.section
-              key="opening-gate"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.8 }}
-              className="w-full"
-            >
-              <Scene1Opening onStart={handleStart} />
-            </motion.section>
-          )}
-        </AnimatePresence>
+      {/* Floating Mode Switcher Button (Top Right Under Header) */}
+      <div className="fixed top-14 right-3 sm:right-6 z-40 flex items-center gap-1 p-1 rounded-full bg-[#10080D]/80 backdrop-blur-md border border-[#D7B47C]/30 text-xs shadow-md">
+        <button
+          onClick={() => setViewMode('deck')}
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+            viewMode === 'deck'
+              ? 'bg-[#4A1228] text-[#D7B47C] font-medium border border-[#D7B47C]/40'
+              : 'text-[#FFF0E8]/70 hover:text-white'
+          }`}
+          title="Card-by-card story mode (like the Instagram reel)"
+        >
+          <Layers className="w-3.5 h-3.5" />
+          <span className="hidden xs:inline">Reel Cards</span>
+        </button>
 
-        {/* FULL INTERACTIVE EXPERIENCE (VISIBLE & SCROLLABLE) */}
-        <div className={`transition-opacity duration-1000 ${hasStarted ? 'opacity-100' : 'opacity-90'}`}>
-          {/* SECTION 1: PHOTO REVEAL */}
-          <div id="photo" className="scroll-mt-16 w-full">
-            <Scene2PhotoReveal onNext={() => scrollTo('video')} />
-          </div>
+        <button
+          onClick={() => setViewMode('scroll')}
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-full transition-all cursor-pointer ${
+            viewMode === 'scroll'
+              ? 'bg-[#4A1228] text-[#D7B47C] font-medium border border-[#D7B47C]/40'
+              : 'text-[#FFF0E8]/70 hover:text-white'
+          }`}
+          title="Continuous scroll mode"
+        >
+          <AlignJustify className="w-3.5 h-3.5" />
+          <span className="hidden xs:inline">Scroll View</span>
+        </button>
+      </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+      {/* RENDER VIEW MODE */}
+      <main className="relative z-10 w-full pt-12 sm:pt-14">
+        {viewMode === 'deck' ? (
+          /* EXACT CARD-BY-CARD REEL EXPERIENCE */
+          <StoryCardDeck />
+        ) : (
+          /* FULL SCROLLABLE EXPERIENCE */
+          <div className="w-full">
+            <div id="gate" className="w-full">
+              <Scene1Opening onStart={() => scrollTo('photo')} />
+            </div>
 
-          {/* SECTION 2: VIDEO MOMENT */}
-          <div id="video" className="scroll-mt-16 w-full">
-            <Scene3VideoMoment onNext={() => scrollTo('compliments')} />
-          </div>
+            <div id="photo" className="scroll-mt-16 w-full">
+              <Scene2PhotoReveal onNext={() => scrollTo('video')} />
+            </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
-          {/* SECTION 3: SEVEN COMPLIMENTS */}
-          <div id="compliments" className="scroll-mt-16 w-full">
-            <Scene4SevenThings onNext={() => scrollTo('meter')} />
-          </div>
+            <div id="video" className="scroll-mt-16 w-full">
+              <Scene3VideoMoment onNext={() => scrollTo('compliments')} />
+            </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
-          {/* SECTION 4 - 8: THE APOLOGY GAMES & ACTIVITIES */}
-          <div className="w-full py-8 px-4 sm:px-8 text-center">
-            <div className="max-w-xl mx-auto mb-8 space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1e0c16]/80 border border-[#D7B47C]/40 text-xs text-[#D7B47C]">
-                <Gamepad2 className="w-3.5 h-3.5" />
-                <span>The Apology Arcade & Games</span>
-                <Sparkles className="w-3.5 h-3.5" />
+            <div id="compliments" className="scroll-mt-16 w-full">
+              <Scene4SevenThings onNext={() => scrollTo('meter')} />
+            </div>
+
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+            {/* THE APOLOGY GAMES & ACTIVITIES */}
+            <div className="w-full py-8 px-4 sm:px-8 text-center">
+              <div className="max-w-xl mx-auto mb-8 space-y-2">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1e0c16]/80 border border-[#D7B47C]/40 text-xs text-[#D7B47C]">
+                  <Gamepad2 className="w-3.5 h-3.5" />
+                  <span>The Apology Arcade & Games</span>
+                  <Sparkles className="w-3.5 h-3.5" />
+                </div>
+                <h2 className="font-serif text-3xl sm:text-5xl text-[#FFF0E8] font-normal">
+                  Everything to Win Back Your Smile
+                </h2>
               </div>
-              <h2 className="font-serif text-3xl sm:text-5xl text-[#FFF0E8] font-normal">
-                Everything to Win Back Your Smile
-              </h2>
-              <p className="font-sans text-xs sm:text-sm text-[#D7B47C]/80 font-light">
-                Play, explore, redeem, and make peace with your bhulakar boyfriend.
-              </p>
+
+              {/* 1. FORGIVENESS METER */}
+              <div id="meter" className="scroll-mt-20 my-12 w-full flex justify-center">
+                <ForgivenessMeter />
+              </div>
+
+              {/* 2. RUNAWAY STILL ANGRY BUTTON */}
+              <div id="runaway" className="scroll-mt-20 my-12 w-full flex justify-center">
+                <RunawayButtonGame />
+              </div>
+
+              {/* 3. CATCH PRA PTI'S HEARTS */}
+              <div id="catcher" className="scroll-mt-20 my-12 w-full flex justify-center">
+                <HeartCatcherGame />
+              </div>
+
+              {/* 4. BOYFRIEND LOVE COUPONS */}
+              <div id="coupons" className="scroll-mt-20 my-12 w-full flex justify-center">
+                <BoyfriendCoupons />
+              </div>
+
+              {/* 5. OFFICIAL PEACE TREATY WITH FINGER SIGNATURE PAD */}
+              <div id="treaty" className="scroll-mt-20 my-12 w-full flex justify-center">
+                <SignaturePadTreaty onSigned={() => {}} />
+              </div>
             </div>
 
-            {/* 1. FORGIVENESS METER */}
-            <div id="meter" className="scroll-mt-20 my-12 w-full flex justify-center">
-              <ForgivenessMeter />
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
+
+            {/* LIVE TYPEWRITER LETTER */}
+            <div id="letter" className="scroll-mt-16 w-full py-8 flex justify-center px-4">
+              <TypewriterLetter onComplete={() => {}} />
             </div>
 
-            {/* 2. RUNAWAY STILL ANGRY BUTTON */}
-            <div id="runaway" className="scroll-mt-20 my-12 w-full flex justify-center">
-              <RunawayButtonGame />
-            </div>
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
 
-            {/* 3. CATCH PRA PTI'S HEARTS */}
-            <div id="catcher" className="scroll-mt-20 my-12 w-full flex justify-center">
-              <HeartCatcherGame />
-            </div>
-
-            {/* 4. BOYFRIEND LOVE COUPONS */}
-            <div id="coupons" className="scroll-mt-20 my-12 w-full flex justify-center">
-              <BoyfriendCoupons />
-            </div>
-
-            {/* 5. OFFICIAL PEACE TREATY */}
-            <div id="treaty" className="scroll-mt-20 my-12 w-full flex justify-center">
-              <PeaceTreaty />
-            </div>
-          </div>
-
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
-
-          {/* SECTION 9: MY HANDWRITTEN LETTER */}
-          <div id="letter" className="scroll-mt-16 w-full">
-            <Scene5Letter onNext={() => scrollTo('ending')} />
-          </div>
-
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#D7B47C]/20 to-transparent my-8" />
-
-          {/* SECTION 10: ENDING CHOICE & CALLBACK */}
-          <div id="ending" className="scroll-mt-16 w-full space-y-12">
-            <Scene6Ending onNext={() => scrollTo('final-callback')} />
-            <div id="final-callback" className="w-full">
-              <SceneFinalCallback onReplay={handleReplay} />
+            {/* ENDING CHOICE & CALLBACK */}
+            <div id="ending" className="scroll-mt-16 w-full space-y-12">
+              <Scene6Ending onNext={() => scrollTo('final-callback')} />
+              <div id="final-callback" className="w-full">
+                <SceneFinalCallback onReplay={handleReplay} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
