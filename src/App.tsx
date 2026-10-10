@@ -9,6 +9,7 @@ import { Scene1Opening } from './components/Scene1Opening';
 import { Scene2PhotoReveal } from './components/Scene2PhotoReveal';
 import { Scene3VideoMoment } from './components/Scene3VideoMoment';
 import { Scene4SevenThings } from './components/Scene4SevenThings';
+import { SceneGamesHub } from './components/SceneGamesHub';
 import { Scene5Letter } from './components/Scene5Letter';
 import { Scene6Ending } from './components/Scene6Ending';
 import { SceneFinalCallback } from './components/SceneFinalCallback';
@@ -19,7 +20,7 @@ const MainApp: React.FC = () => {
 
   const handleNext = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentScene((prev) => Math.min(7, prev + 1));
+    setCurrentScene((prev) => Math.min(8, prev + 1));
   };
 
   const handleReplay = () => {
@@ -44,7 +45,7 @@ const MainApp: React.FC = () => {
       {/* Floating Header Controls */}
       <HeaderControls
         currentScene={currentScene}
-        totalScenes={7}
+        totalScenes={8}
         onSceneSelect={handleSceneSelect}
         showProgress={currentScene > 1}
       />
@@ -113,7 +114,7 @@ const MainApp: React.FC = () => {
               transition={{ duration: 0.9, ease: 'easeInOut' }}
               className="w-full"
             >
-              <Scene5Letter onNext={handleNext} />
+              <SceneGamesHub onNext={handleNext} />
             </motion.div>
           )}
 
@@ -126,13 +127,26 @@ const MainApp: React.FC = () => {
               transition={{ duration: 0.9, ease: 'easeInOut' }}
               className="w-full"
             >
-              <Scene6Ending onNext={handleNext} />
+              <Scene5Letter onNext={handleNext} />
             </motion.div>
           )}
 
           {currentScene === 7 && (
             <motion.div
               key="scene-7"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.9, ease: 'easeInOut' }}
+              className="w-full"
+            >
+              <Scene6Ending onNext={handleNext} />
+            </motion.div>
+          )}
+
+          {currentScene === 8 && (
+            <motion.div
+              key="scene-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

@@ -175,7 +175,7 @@ export const Scene4SevenThings: React.FC<Scene4SevenThingsProps> = ({ onNext }) 
           className="group flex flex-col items-center gap-2 px-8 py-3.5 rounded-full bg-[#1e0c16]/80 hover:bg-[#4A1228]/80 text-[#FFF0E8] border border-[#D7B47C]/30 hover:border-[#D7B47C]/70 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer"
         >
           <span className="font-serif text-base sm:text-lg tracking-wider text-[#FFF0E8]/95 group-hover:text-[#FFF0E8]">
-            One more thing, baby...
+            Can I make you smile? 🎮✨
           </span>
           <ChevronDown className="w-4 h-4 text-[#D7B47C] group-hover:translate-y-1 transition-transform" />
         </button>

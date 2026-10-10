@@ -4,6 +4,20 @@ export interface Compliment {
   subtext?: string;
 }
 
+export interface Coupon {
+  id: number;
+  title: string;
+  perk: string;
+  code: string;
+  terms: string;
+}
+
+export interface PeaceClause {
+  number: number;
+  title: string;
+  text: string;
+}
+
 export interface SiteConfig {
   recipientName: string;
   media: {
@@ -36,6 +50,40 @@ export interface SiteConfig {
     compliments: Compliment[];
     continuePrompt: string;
     allOpenedMessage: string;
+  };
+  gamesHub: {
+    title: string;
+    subtitle: string;
+    forgivenessMeter: {
+      title: string;
+      subtitle: string;
+      levels: { [key: number]: string };
+    };
+    runawayButton: {
+      title: string;
+      subtitle: string;
+      yesText: string;
+      angryText: string;
+      taunts: string[];
+    };
+    heartCatcher: {
+      title: string;
+      subtitle: string;
+      targetScore: number;
+      victoryText: string;
+    };
+    coupons: {
+      title: string;
+      subtitle: string;
+      items: Coupon[];
+    };
+    peaceTreaty: {
+      title: string;
+      subtitle: string;
+      clauses: PeaceClause[];
+      signaturePrompt: string;
+      sealedMessage: string;
+    };
   };
   scene5: {
     envelopePrompt: string;
@@ -145,6 +193,104 @@ export const siteConfig: SiteConfig = {
     ],
     continuePrompt: "Continue forward ✨",
     allOpenedMessage: "Every thought has been unlocked for you ❤️",
+  },
+
+  gamesHub: {
+    title: "The Apology Games & Peace Hub",
+    subtitle: "Because a simple sorry isn't enough for the most special girl.",
+    forgivenessMeter: {
+      title: "The Official Forgiveness Meter",
+      subtitle: "Drag the slider to show where your heart is right now:",
+      levels: {
+        0: "Still grumpy? 🥺 My heart hurts! Please have mercy...",
+        25: "I promise I was staring at you in complete awe that night!",
+        50: "Getting warmer... how about late-night ice cream and your favourite snacks?",
+        75: "Almost there! I can see that gorgeous smile creeping up 🥰",
+        100: "100% Forgiven! You are the sweetest, prettiest angel in the world! 🎉❤️",
+      },
+    },
+    runawayButton: {
+      title: "Are You Still Angry?",
+      subtitle: "Be honest... but good luck trying to click 'Still Angry' 😜",
+      yesText: "Yes, I forgive you ❤️",
+      angryText: "Still angry 😤",
+      taunts: [
+        "Oops, too slow! 😜",
+        "Look at my puppy eyes 🥺",
+        "You secretly love me too much!",
+        "Missed again! Just click the heart ❤️",
+        "I promise to compliment you 24/7!",
+        "Resistance is futile, baby 🥰",
+      ],
+    },
+    heartCatcher: {
+      title: "Catch Prapti's Floating Hearts 🌟",
+      subtitle: "Tap 5 floating glowing hearts to unlock an exclusive boyfriend pledge!",
+      targetScore: 5,
+      victoryText: "Pledge Unlocked: Prapti is officially crowned the most gorgeous Navratri queen forever! 👑✨",
+    },
+    coupons: {
+      title: "Redeemable Boyfriend Love Coupons 🎟️",
+      subtitle: "Valid forever. No expiration date. Non-transferable.",
+      items: [
+        {
+          id: 1,
+          title: "Midnight Drive & Ice Cream",
+          perk: "1x Any time, any flavour, destination of your choice.",
+          code: "SWEET-TOOTH-PRA",
+          terms: "Includes boyfriend holding your hand while you pick flavours.",
+        },
+        {
+          id: 2,
+          title: "Automatic Win in Any Argument",
+          perk: "1x Instant surrender pass by boyfriend with zero comeback.",
+          code: "ALWAYS-RIGHT-PRA",
+          terms: "Boyfriend will nod solemnly and say 'You were right all along'.",
+        },
+        {
+          id: 3,
+          title: "Instant Outfit Admiration Pass",
+          perk: "Lifetime guarantee: Compliments delivered within 3 seconds.",
+          code: "GORGEOUS-QUEEN-PRA",
+          terms: "Navratri, casuals, pyjamas, anything — you look stunning always.",
+        },
+        {
+          id: 4,
+          title: "Unlimited Cuddle & Forehead Kisses",
+          perk: "Unlimited supply of warmth, listening ears, and forehead kisses.",
+          code: "FOREVER-YOURS-PRA",
+          terms: "Redeemable unconditionally whenever you need reassurance.",
+        },
+      ],
+    },
+    peaceTreaty: {
+      title: "The Official Navratri Peace Treaty",
+      subtitle: "A legally binding romantic agreement between Shreeji and Prapti.",
+      clauses: [
+        {
+          number: 1,
+          title: "Article I: The Beauty Mandate",
+          text: "Boyfriend formally affirms that Prapti looked undeniably breathtaking during Navratri, and no outfit has ever been worn with greater elegance.",
+        },
+        {
+          number: 2,
+          title: "Article II: The Three-Second Rule",
+          text: "From this moment forward, any time Prapti gets dressed up, boyfriend must articulate genuine compliments out loud within 3 seconds of visual contact.",
+        },
+        {
+          number: 3,
+          title: "Article III: The Peace Terms",
+          text: "In consideration of full pardon, boyfriend agrees to provide endless affection, spontaneous sweet treats, and undivided attention upon request.",
+        },
+        {
+          number: 4,
+          title: "Article IV: Permanence",
+          text: "This treaty is entered into with an open heart, sealed with love, and remains permanently binding.",
+        },
+      ],
+      signaturePrompt: "Tap below to sign and seal this peace agreement ✍️",
+      sealedMessage: "Signed & Sealed with Love by Prapti & Shreeji ❤️",
+    },
   },
 
   scene5: {
