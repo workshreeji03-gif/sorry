@@ -144,16 +144,26 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [hasStarted, isMuted, isDucked, startAudio, fadeTo]);
 
-  const duckAudio = useCallback((duck: boolean) => {
-    setIsDucked(duck);
+  const duckAudio = useCallback((shouldMute: boolean) => {
+    setIsDucked(shouldMute);
     if (!audioRef.current || isMuted) return;
 
-    if (duck) {
-      fadeTo(siteConfig.audio.duckedVolume, 800);
+    if (shouldMute) {
+      // Mute background music completely when video plays
+      fadeTo(0, 300);
+      setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+        }
+      }, 350);
     } else {
-      fadeTo(siteConfig.audio.defaultVolume, 1200);
+      // Restore and play romantic background music when video pauses or ends
+      if (audioRef.current && hasStarted && !isMuted) {
+        audioRef.current.play().catch(console.warn);
+      }
+      fadeTo(siteConfig.audio.defaultVolume, 800);
     }
-  }, [isMuted, fadeTo]);
+  }, [isMuted, hasStarted, fadeTo]);
 
   const setVolumeLevel = useCallback((level: number) => {
     if (!audioRef.current || isMuted) return;

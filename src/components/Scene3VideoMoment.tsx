@@ -47,22 +47,14 @@ export const Scene3VideoMoment: React.FC<Scene3VideoMomentProps> = ({ onNext }) 
     }
   };
 
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play().then(() => {
-        setIsPlaying(true);
-        // Duck background music so video audio can be heard clearly
-        duckAudio(true);
-      }).catch((err) => {
-        console.warn('Video play error:', err);
-      });
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-      // Restore background music
-      duckAudio(false);
-    }
+  const handleNativePlay = () => {
+    setIsPlaying(true);
+    duckAudio(true);
+  };
+
+  const handleNativePause = () => {
+    setIsPlaying(false);
+    duckAudio(false);
   };
 
   const handleVideoEnded = () => {
@@ -71,13 +63,37 @@ export const Scene3VideoMoment: React.FC<Scene3VideoMomentProps> = ({ onNext }) 
     duckAudio(false);
   };
 
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+        duckAudio(true);
+      }).catch((err) => {
+        console.warn('Video play error:', err);
+      });
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+      duckAudio(false);
+    }
+  };
+
+  const handleAdvance = () => {
+    if (videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+    duckAudio(false);
+    onNext();
+  };
+
   const toggleVideoMute = () => {
     if (!videoRef.current) return;
     const newMuted = !videoRef.current.muted;
     videoRef.current.muted = newMuted;
     setIsVideoMuted(newMuted);
     if (isPlaying) {
-      // If video is muted by user, restore background music
+      // If video is muted by user, restore background music, else mute background music
       duckAudio(!newMuted);
     }
   };
@@ -169,6 +185,8 @@ export const Scene3VideoMoment: React.FC<Scene3VideoMomentProps> = ({ onNext }) 
                 onLoadedMetadata={handleLoadedMetadata}
                 onTimeUpdate={handleTimeUpdate}
                 onEnded={handleVideoEnded}
+                onPlay={handleNativePlay}
+                onPause={handleNativePause}
                 onError={() => setHasError(true)}
                 onClick={togglePlay}
                 style={{ aspectRatio }}
@@ -268,7 +286,7 @@ export const Scene3VideoMoment: React.FC<Scene3VideoMomentProps> = ({ onNext }) 
         className="relative z-10 mt-10 sm:mt-14 pb-8"
       >
         <button
-          onClick={onNext}
+          onClick={handleAdvance}
           className="group flex flex-col items-center gap-2 px-8 py-3.5 rounded-full bg-[#1e0c16]/80 hover:bg-[#4A1228]/80 text-[#FFF0E8] border border-[#D7B47C]/30 hover:border-[#D7B47C]/70 shadow-lg transition-all duration-300 active:scale-95 cursor-pointer"
         >
           <span className="font-serif text-base sm:text-lg tracking-wider text-[#FFF0E8]/95 group-hover:text-[#FFF0E8]">
